@@ -1,0 +1,97 @@
+<div class="container" ng-cloak *ngIf="isShowProducts" >
+
+    <table class="table table-stripped table-hover table-sm shadow" >
+        <h2>{{category.name}}</h2>
+        <thead class="thead-light">
+            <tr>
+                <th>Name</th>
+                <th>Stock</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of category.products;">
+                <td>{{product.name}}</td>
+                <td>{{product.stock}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.productDescription}}</td>
+                <td><img src={{product.image}} alt={{product.name}} ></td>
+                <td>
+                    <button (click)="BuyProduct(product)" type="button" class="btn btn-outline-success">Buy</button>
+                </td>
+                </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- show all the categories in the registry -->
+<div class="container p-5" *ngIf="isShowTable">
+    <div class="border border-light rounded p-5">
+        <button (click)="showForm()" type="button" class="btn btn-sm btn-secondary">New Category</button>
+        <button (click)="back()" type="button" class="btn btn-sm btn-outline-danger ">Return</button>
+    </div>
+
+    <!-- Indica que essa tabela só irá aparecer quando existir algum item em categories -->
+    <div class="container" >
+        <table class="table table-stripped table-hover table-sm shadow" *ngIf="categories">
+            <thead>
+                <tr class="thead-light">
+                    <th>Name</th>
+                    <th>Products</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Igual o foreach do c#, só que versão angular/typescript -->
+                <tr *ngFor="let category of categories">
+                    <td>{{category.name}}</td>
+                    <td><a (click)="showProducts(category.id)" class="text text-primary hover">See</a></td>
+                    <td>
+                        <button (click)="editCategory(category.id)" type="button" class="btn btn-outline-success">
+                            <i class="bi pencil-square" title="edit"></i>Edit</button>
+                        <button (click)="deleteCategory(category.id)" type="button" class="btn btn-outline-danger">
+                            <i class="bi trash3-fill" title="delete"></i>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<!-- Form to register a new category -->
+<div class="container p-5" *ngIf="isShowForm">
+
+    <div class="row">
+        <div class="col-6 border border-light shadow rounded p-5" *ngIf="form">
+            <h4>{{formTitle}}</h4>
+            <hr>
+            <form [formGroup]="form" (ngSubmit)="createCategory(isEditingCategory)">
+                <input type="hidden" formControlName="id">
+
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" formControlName="name" class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="text" formControlName="image" class="form-control form-control-sm">
+                </div>
+
+                <div class="container pt-2">
+                    <button type="submit" class="btn btn-outline-success">Save</button>
+                    <button (click)="showTable()" type="button" class="btn btn-danger">Back</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</div>
